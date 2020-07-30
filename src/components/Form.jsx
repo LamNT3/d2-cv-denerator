@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import TemplateCV1 from './TemplateCV1';
+import TemplateCV2 from './TemplateCV2';
 
 function Form() {
 
@@ -11,17 +13,35 @@ function Form() {
         txtCertificate: "",
         txtEducation: "",
         txtExp: "",
+        template: "template1"
 
     });
-
+    // const [image, setImage] = React.useState({
+    //     file: "",
+    //     imagePreviewUrl: "",
+    // });
     function onHandleChange(event) {
         var target = event.target
         var name = target.name;
-        var value = target.value
+        var value = target.value;
+
         setState({
             ...state,
             [name]: value
         })
+
+        // let reader = new FileReader();
+        // console.log(target.files[0]);
+        // let file = target.files[0];
+        
+        // reader.onloadend = () => {
+        //     setImage({
+        //         file: file,
+        //         imagePreviewUrl: reader.result
+        //     });
+        // }
+
+        // reader.readAsDataURL(file)
     }
 
     const [submitName, setSubmitName] = useState(state.txtName);
@@ -33,9 +53,11 @@ function Form() {
     const [submitEducation, setSubmitEducation] = useState(state.txtEducation);
     const [submitExp, setSubmitExp] = useState(state.txtExp);
     const [isCvTemplateVisible, setIsCvTemplateVisible] = useState(false);
+    const [isCvTemplate, setIsCvTemplate] = useState(state.template);
 
     function submit(event) {
         event.preventDefault();
+        console.log(state);
         setIsCvTemplateVisible(true);
         setSubmitName(state.txtName);
         setSubmitEmail(state.txtEmail);
@@ -45,15 +67,15 @@ function Form() {
         setSubmitCertificate(state.txtCertificate);
         setSubmitEducation(state.txtEducation);
         setSubmitExp(state.txtExp);
-
+        setIsCvTemplate(state.template);
     }
 
     return (
         <div>
             <form onSubmit={submit}>
-                <div className="panel panel-success">
-                    <div className="panel-heading">
-                        <h3 className="panel-title">Form title</h3>
+                <div className="panel panel-success col-xs-12 col-sm- col-md-6 col-lg-6">
+                    <div className="panel-heading row">
+                        <h3 className="panel-title">Điền thông tin</h3>
                     </div>
                     <div className="panel-body">
                         <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -82,11 +104,23 @@ function Form() {
                         </div>
                         <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
                             <label>Học vấn</label>
-                            <input type="text" className="form-control" placeholder="Input field" name="txtEducation" value={state.txtEducation} onChange={onHandleChange} />
+                            <textarea className="form-control" placeholder="Input field" name="txtEducation" value={state.txtEducation} onChange={onHandleChange} />
                         </div>
                         <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
                             <label>Kinh nghiệm làm việc</label>
-                            <input type="text" className="form-control" placeholder="Input field" name="txtExp" value={state.txtExp} onChange={onHandleChange} />
+                            <textarea className="form-control" placeholder="Input field" name="txtExp" value={state.txtExp} onChange={onHandleChange} />
+                        </div>
+                        <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div className="radio">
+                                <label>
+                                    <input type="radio" name="template" value="template1" checked={state.template === "template1"} onChange={onHandleChange} />
+                                    Template 1
+                                </label>
+                                <label>
+                                    <input type="radio" name="template" value="template2" checked={state.template === "template2"} onChange={onHandleChange} />
+                                    Template 2
+                                </label>
+                            </div>
                         </div>
                         <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <button type="submit" className="btn btn-primary">Submit</button>
@@ -96,50 +130,29 @@ function Form() {
             </form>
             {
                 isCvTemplateVisible ?
-                (
-                    <div className="panel panel-success cv-template">
-                        <div className="panel-heading">
-                            <h3 className="panel-title">Form title</h3>
-                        </div>
-                        <div className="panel-body">
-                            <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                <label>Họ và tên</label>
-                                <p>{submitName}</p>
-                            </div>
-                            <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                <label>Email</label>
-                                <p>{submitEmail}</p>
-                            </div>
-                            <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                <label>Tuổi</label>
-                                <p>{submitAge}</p>
-                            </div>
-                            <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                <label>Địa chỉ</label>
-                                <p>{submitAddress}</p>
-                            </div>
-                            <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                <label>Kĩ năng</label>
-                                <p>{submitSkill}</p>
-                            </div>
-                            <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                <label>Chứng chỉ</label>
-                                <p>{submitCertificate}</p>
-                            </div>
-                            <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                <label>Học vấn</label>
-                                <p>{submitEducation}</p>
-                            </div>
-                            <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                <label>Kinh nghiệm làm việc</label>
-                                <p>{submitExp}</p>
-                            </div>
-                            <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <button type="submit" className="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                    </div>
-                ) : ""
+                    (
+                        isCvTemplate == "template1" ?
+                            <TemplateCV1
+                                name={submitName}
+                                email={submitEmail}
+                                age={submitAge}
+                                address={submitAddress}
+                                skill={submitSkill}
+                                certificate={submitCertificate}
+                                education={submitEducation}
+                                exp={submitExp}
+                            /> :
+                            <TemplateCV2
+                                name={submitName}
+                                email={submitEmail}
+                                age={submitAge}
+                                address={submitAddress}
+                                skill={submitSkill}
+                                certificate={submitCertificate}
+                                education={submitEducation}
+                                exp={submitExp}
+                            />
+                    ) : ""
             }
 
         </div>
