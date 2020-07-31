@@ -1,162 +1,120 @@
-import React, { useState } from 'react';
-import TemplateCV1 from './TemplateCV1';
-import TemplateCV2 from './TemplateCV2';
+import React, { Component } from 'react';
 
-function Form() {
-
-    const [state, setState] = React.useState({
-        txtName: "",
-        txtEmail: "",
-        txtAge: "",
-        txtAddress: "",
-        txtSkill: "",
-        txtCertificate: "",
-        txtEducation: "",
-        txtExp: "",
-        template: "template1"
-
-    });
-    // const [image, setImage] = React.useState({
-    //     file: "",
-    //     imagePreviewUrl: "",
-    // });
-    function onHandleChange(event) {
+class Form extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            image: '',
+            name: '',
+            email: '',
+            age: '',
+            address: '',
+            skill: '',
+            certificate: '',
+            education: '',
+            exp: '',
+            template: 'template1',
+            isCvTemplateVisible: false,
+        };
+    }
+    onHandleChange = (event) => {
         var target = event.target
         var name = target.name;
         var value = target.value;
 
-        setState({
-            ...state,
+        this.setState({
             [name]: value
         })
-
-        // let reader = new FileReader();
-        // console.log(target.files[0]);
-        // let file = target.files[0];
-        
-        // reader.onloadend = () => {
-        //     setImage({
-        //         file: file,
-        //         imagePreviewUrl: reader.result
-        //     });
-        // }
-
-        // reader.readAsDataURL(file)
     }
 
-    const [submitName, setSubmitName] = useState(state.txtName);
-    const [submitEmail, setSubmitEmail] = useState(state.txtEmail);
-    const [submitAge, setSubmitAge] = useState(state.txtAge);
-    const [submitAddress, setSubmitAddress] = useState(state.txtAddress);
-    const [submitSkill, setSubmitSkill] = useState(state.txtSkill);
-    const [submitCertificate, setSubmitCertificate] = useState(state.txtCertificate);
-    const [submitEducation, setSubmitEducation] = useState(state.txtEducation);
-    const [submitExp, setSubmitExp] = useState(state.txtExp);
-    const [isCvTemplateVisible, setIsCvTemplateVisible] = useState(false);
-    const [isCvTemplate, setIsCvTemplate] = useState(state.template);
-
-    function submit(event) {
+    onHandleSubmit = (event) => {
         event.preventDefault();
-        console.log(state);
-        setIsCvTemplateVisible(true);
-        setSubmitName(state.txtName);
-        setSubmitEmail(state.txtEmail);
-        setSubmitAge(state.txtAge);
-        setSubmitAddress(state.txtAddress);
-        setSubmitSkill(state.txtSkill);
-        setSubmitCertificate(state.txtCertificate);
-        setSubmitEducation(state.txtEducation);
-        setSubmitExp(state.txtExp);
-        setIsCvTemplate(state.template);
+        this.setState({
+            isCvTemplateVisible: true
+        });
+        let url = "http://localhost:3000/users/1";
+        fetch(url, {
+            method: "PUT",
+            mode: "cors",
+            body: JSON.stringify(this.state),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            console.log(response.json());
+        })
+        .catch(function(err) {
+            console.info(err + " url: " + url);
+        });
+        this.props.onSubmit(this.state);
     }
 
-    return (
-        <div>
-            <form onSubmit={submit}>
-                <div className="panel panel-success col-xs-12 col-sm- col-md-6 col-lg-6">
-                    <div className="panel-heading row">
-                        <h3 className="panel-title">Điền thông tin</h3>
-                    </div>
-                    <div className="panel-body">
-                        <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <label>Họ và tên</label>
-                            <input type="text" className="form-control" placeholder="Input field" name="txtName" value={state.txtName} onChange={onHandleChange} />
+    render() {
+        return (
+            <div>
+                <form onSubmit={this.onHandleSubmit}>
+                    <div className="panel panel-success col-xs-12 col-sm- col-md-4 col-lg-4">
+                        <div className="panel-heading row">
+                            <h3 className="panel-title">Điền thông tin</h3>
                         </div>
-                        <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <label>Email</label>
-                            <input type="text" className="form-control" placeholder="Input field" name="txtEmail" value={state.txtEmail} onChange={onHandleChange} />
-                        </div>
-                        <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <label>Tuổi</label>
-                            <input type="text" className="form-control" placeholder="Input field" name="txtAge" value={state.txtAge} onChange={onHandleChange} />
-                        </div>
-                        <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <label>Địa chỉ</label>
-                            <input type="text" className="form-control" placeholder="Input field" name="txtAddress" value={state.txtAddress} onChange={onHandleChange} />
-                        </div>
-                        <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <label>Kĩ năng</label>
-                            <input type="text" className="form-control" placeholder="Input field" name="txtSkill" value={state.txtSkill} onChange={onHandleChange} />
-                        </div>
-                        <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <label>Chứng chỉ</label>
-                            <input type="text" className="form-control" placeholder="Input field" name="txtCertificate" value={state.txtCertificate} onChange={onHandleChange} />
-                        </div>
-                        <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <label>Học vấn</label>
-                            <textarea className="form-control" placeholder="Input field" name="txtEducation" value={state.txtEducation} onChange={onHandleChange} />
-                        </div>
-                        <div className="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <label>Kinh nghiệm làm việc</label>
-                            <textarea className="form-control" placeholder="Input field" name="txtExp" value={state.txtExp} onChange={onHandleChange} />
-                        </div>
-                        <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <div className="radio">
-                                <label>
-                                    <input type="radio" name="template" value="template1" checked={state.template === "template1"} onChange={onHandleChange} />
-                                    Template 1
-                                </label>
-                                <label>
-                                    <input type="radio" name="template" value="template2" checked={state.template === "template2"} onChange={onHandleChange} />
-                                    Template 2
-                                </label>
+                        <div className="panel-body">
+                            <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label>Link ảnh</label>
+                                <input type="text" className="form-control" placeholder="Input field" name="image" value={this.state.image} onChange={this.onHandleChange} />
+                            </div>
+                            <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label>Họ và tên</label>
+                                <input type="text" className="form-control" placeholder="Input field" name="name" value={this.state.name} onChange={this.onHandleChange} />
+                            </div>
+                            <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label>Email</label>
+                                <input type="text" className="form-control" placeholder="Input field" name="email" value={this.state.email} onChange={this.onHandleChange} />
+                            </div>
+                            <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label>Tuổi</label>
+                                <input type="text" className="form-control" placeholder="Input field" name="age" value={this.state.age} onChange={this.onHandleChange} />
+                            </div>
+                            <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label>Địa chỉ</label>
+                                <input type="text" className="form-control" placeholder="Input field" name="address" value={this.state.address} onChange={this.onHandleChange} />
+                            </div>
+                            <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label>Kĩ năng</label>
+                                <input type="text" className="form-control" placeholder="Input field" name="skill" value={this.state.skill} onChange={this.onHandleChange} />
+                            </div>
+                            <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label>Chứng chỉ</label>
+                                <input type="text" className="form-control" placeholder="Input field" name="certificate" value={this.state.certificate} onChange={this.onHandleChange} />
+                            </div>
+                            <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label>Học vấn</label>
+                                <textarea className="form-control" placeholder="Input field" name="education" value={this.state.education} onChange={this.onHandleChange} />
+                            </div>
+                            <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label>Kinh nghiệm làm việc</label>
+                                <textarea className="form-control" placeholder="Input field" name="exp" value={this.state.exp} onChange={this.onHandleChange} />
+                            </div>
+                            <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div className="radio">
+                                    <label>
+                                        <input type="radio" name="template" value="template1" checked={this.state.template === "template1"} onChange={this.onHandleChange} />
+                                        Template 1
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="template" value="template2" checked={this.state.template === "template2"} onChange={this.onHandleChange} />
+                                        Template 2
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <button type="submit" className="btn btn-primary">Submit</button>
                             </div>
                         </div>
-                        <div className="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <button type="submit" className="btn btn-primary">Submit</button>
-                        </div>
                     </div>
-                </div>
-            </form>
-            {
-                isCvTemplateVisible ?
-                    (
-                        isCvTemplate == "template1" ?
-                            <TemplateCV1
-                                name={submitName}
-                                email={submitEmail}
-                                age={submitAge}
-                                address={submitAddress}
-                                skill={submitSkill}
-                                certificate={submitCertificate}
-                                education={submitEducation}
-                                exp={submitExp}
-                            /> :
-                            <TemplateCV2
-                                name={submitName}
-                                email={submitEmail}
-                                age={submitAge}
-                                address={submitAddress}
-                                skill={submitSkill}
-                                certificate={submitCertificate}
-                                education={submitEducation}
-                                exp={submitExp}
-                            />
-                    ) : ""
-            }
-
-        </div>
-    );
+                </form>
+            </div>
+        );
+    }
 }
 
 export default Form;

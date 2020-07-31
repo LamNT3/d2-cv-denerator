@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "image": "reewew",
+      "name": "A001",
+      "email": "lamnt3@rikkeisoft.com",
+      "age": "213",
+      "address": "ấd",
+      "skill": "eww",
+      "certificate": "12313",
+      "education": "qwqwqwqqw",
+      "exp": "qwqwqw",
+      "template": "template2",
+      "isCvTemplateVisible": true,
+      "id": 1
+    }
+  ]
+}
